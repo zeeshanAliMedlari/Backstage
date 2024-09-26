@@ -28,8 +28,14 @@ backend:
   # This is for local development only, it is not recommended to use this in production
   # The production database configuration is stored in app-config.production.yaml
   database:
-    client: better-sqlite3
-    connection: ':memory:'
+    #client: better-sqlite3
+    #connection: ':memory:'
+    client: pg
+    connection:
+      host: 127.0.0.1
+      port: 5432
+      user: postgres
+      password: backstage
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
 
 integrations:
@@ -64,12 +70,26 @@ techdocs:
 
 auth:
   # see https://backstage.io/docs/auth/ to learn about auth providers
+  environment: development
   providers:
     # See https://backstage.io/docs/auth/guest/provider
     guest: {}
+    github:
+      development:
+        clientId: Ov23liMqbQhZSntHDs5f
+        clientSecret: 7d809df3486437ba4172a83a8f62c44931b6c2e9
+        signIn:
+          resolvers:
+            # Matches the GitHub username with the Backstage user entity name.
+            # See https://backstage.io/docs/auth/github/provider#resolvers for more resolvers.
+            - resolver: usernameMatchingUserEntityName
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
+  defaultAuthor:
+    name: zeeshanAliMedlari # Defaults to `Scaffolder`
+    email: zeeshanmedlari@icloud.com # Defaults to `scaffolder@backstage.io`
+  defaultCommitMessage: "U can't touch this" # Defaults to 'Initial commit'
 
 catalog:
   import:
@@ -77,6 +97,19 @@ catalog:
     pullRequestBranchName: backstage-integration
   rules:
     - allow: [Component, System, API, Resource, Location]
+  providers:
+    kubernetes:
+      local-cluster:
+        cluster: Backstage_Cluster
+        processor:
+          namespaceOverride: default
+          defaultOwner: guests
+        schedule:
+          frequency:
+            seconds: 30
+          timeout:
+            seconds: 5
+
   locations:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
@@ -95,17 +128,38 @@ catalog:
         - allow: [User, Group]
 
     ## Uncomment these lines to add more example data
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
+    - type: url
+      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
 
     ## Uncomment these lines to add an example org
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
-    #   rules:
-    #     - allow: [User, Group]
+    - type: url
+      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
+      rules:
+        - allow: [User, Group]
+
+    - type: url
+      target: https://github.com/backstage/software-templates/blob/main/scaffolder-templates/react-ssr-template/template.yaml
+      rules:
+        - allow: [Template]
+    - type: file
+      target: template.yaml # Backstage will expect the file to be in packages/backend/template.yaml
 
 kubernetes:
   # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options
+  serviceLocatorMethod:
+    type: multiTenant
+  clusterLocatorMethods:
+    - type: config
+      clusters:
+        - name: Backstage_Cluster
+          url: https://2B5CA22BEC81C7499BC548FBFF1888AC.gr7.us-west-1.eks.amazonaws.com
+          authProvider: aws # Other options: google, aws, oidc, etc.
+          kubeConfig: /root/.kube/config # Path to your kubeconfig file (if using kubeconfig)
+
+        - name: gitlab-cluster
+          url: gitlab-cluster-dns-dse48hu4.hcp.westus.azmk8s.io
+          authProvider: azure
+          skipTLSVerify: true  
 
 # see https://backstage.io/docs/permissions/getting-started for more on the permission framework
 permission:
