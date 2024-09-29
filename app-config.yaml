@@ -107,7 +107,7 @@ auth:
         clientSecret: gloas-460fc3b0c97e18b4ba19a660fb064bbcfc5ffe59170bd6d13c26747aba5e1ccc
         signIn:
           resolvers:
-            - resolver: usernameMatchingUserEntityName
+            - resolver: emailMatchingUserEntityProfileEmail
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
