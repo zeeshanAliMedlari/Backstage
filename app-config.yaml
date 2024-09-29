@@ -100,7 +100,7 @@ auth:
         signIn:
           resolvers:
             # typically you would pick one of these
-            - resolver: usernameMatchingUserEntityName
+            - resolver: emailMatchingUserEntityProfileEmail
     gitlab:
       development:
         clientId: 85ef428c303789962c216ae0307a71cd235416a30cc9d06bd3b379a7c2cbf5ed
