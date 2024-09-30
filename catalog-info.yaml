@@ -11,17 +11,3 @@ spec:
   type: website
   owner: john@example.com
   lifecycle: experimental
-
-apiVersion: backstage.io/v1alpha1
-kind: User
-metadata:
-  name: Zeeshan Ali
-  annotations:
-    github.com/user-login: Zeeshan Ali
-    gitlab.com/user-login: ZeeshanM  # GitLab username
-spec:
-  profile:
-    displayName: John Doe
-    email: john.doe@example.com
-  memberOf:
-    - team-a

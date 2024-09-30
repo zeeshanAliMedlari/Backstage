@@ -48,12 +48,6 @@ integrations:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
     #   token: ${GHE_TOKEN}
-  awsS3:
-    - accessKeyId: AKIA3LET5SCIEBNY2Q5O
-      secretAccessKey: ZbTXk+XPl2ThMlzUnOTLaq/OvviQEu8b0cY2NyP5
-  gitlab:
-    - host: gitlab.com
-      token: glpat-ua5LYoad1H3YC2EV5g6s
 
 proxy:
   ### Example for how to add a proxy endpoint for the frontend.
@@ -89,6 +83,7 @@ auth:
             # Matches the GitHub username with the Backstage user entity name.
             # See https://backstage.io/docs/auth/github/provider#resolvers for more resolvers.
             - resolver: usernameMatchingUserEntityName
+<<<<<<< HEAD
     microsoft:
       development:
         clientId: 9a4e3240-80c1-4a28-8093-8abcf23ed731
@@ -108,6 +103,8 @@ auth:
         signIn:
           resolvers:
             - resolver: emailMatchingUserEntityProfileEmail
+=======
+>>>>>>> parent of 1d0bf8c (updated)
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
@@ -134,16 +131,6 @@ catalog:
             seconds: 30
           timeout:
             seconds: 5
-    awsS3:
-      yourProviderId: # identifies your dataset / provider independent of config changes
-        bucketName: my-ews-bucket005
-        prefix: prefix/ # optional
-        region: us-east-2 # optional, uses the default region otherwise
-        schedule: # same options as in SchedulerServiceTaskScheduleDefinition
-          # supports cron, ISO duration, "human duration" as used in code
-          frequency: { minutes: 30 }
-          # supports ISO duration, "human duration" as used in code
-          timeout: { minutes: 3 }
 
   locations:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`

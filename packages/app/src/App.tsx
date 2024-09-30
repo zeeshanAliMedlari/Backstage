@@ -38,7 +38,7 @@ import { AppRouter, FlatRoutes } from '@backstage/core-app-api';
 import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
-import { githubAuthApiRef, microsoftAuthApiRef, gitlabAuthApiRef } from '@backstage/core-plugin-api';
+import { githubAuthApiRef } from '@backstage/core-plugin-api';
 
 const app = createApp({
   apis,
@@ -64,29 +64,12 @@ const app = createApp({
       <SignInPage
         {...props}
         auto
-        providers={[
-          'guest',
-          {
-            id: 'github-auth-provider',
-            title: 'GitHub',
-            message: 'Sign in using GitHub',
-            apiRef: githubAuthApiRef,
-          },
-          {
-            id: 'azure-auth-provider',
-            title: 'Azure',
-            message: 'Sign in using Azure',
-            apiRef: microsoftAuthApiRef,
-          },
-          {
-            id: 'gitlab-auth-provider',
-            title: 'Gitlab',
-            message: 'Sign in using Gitlab',
-            apiRef: gitlabAuthApiRef,
-          },
-        ]}
-        title="Select a sign-in method"
-        align="center"
+        provider={{
+          id: 'github-auth-provider',
+          title: 'GitHub',
+          message: 'Sign in using GitHub',
+          apiRef: githubAuthApiRef,
+        }}
       />
     ),
   },
